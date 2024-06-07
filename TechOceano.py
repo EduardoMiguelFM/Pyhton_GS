@@ -77,7 +77,34 @@ def adicionar_dados_poluicao(dados_poluicao):
         'data_coleta': data_coleta
     })
 
-def listar_dados_cadastrados(usuarios, conteudos, eventos, dados_poluicao):
+def adicionar_recurso_marinhos(recursos_marinhos):
+    recurso_id = str(uuid.uuid4())
+    nome = validar_entrada("Nome do Recurso: ", 'str')
+    tipo = validar_entrada("Tipo de Recurso (peixes, algas, corais, etc.): ", 'str')
+    descricao = validar_entrada("Descrição: ", 'str')
+    recursos_marinhos.append({
+        'recurso_id': recurso_id,
+        'nome': nome,
+        'tipo': tipo,
+        'descricao': descricao
+    })
+
+def adicionar_doacao(doacoes, usuario_id):
+    doacao_id = str(uuid.uuid4())
+    valor = validar_entrada("Valor da Doação: ", 'float')
+    data_doacao = validar_entrada("Data da Doação (DDMMYYYY): ", 'data')
+    forma_pagamento = validar_entrada("Forma de Pagamento (cheque, dinheiro, cartão de crédito): ", 'str')
+    doacoes.append({
+        'doacao_id': doacao_id,
+        'usuario_id': usuario_id,
+        'valor': valor,
+        'data_doacao': data_doacao,
+        'forma_pagamento': forma_pagamento
+    })
+
+
+#listar dados cadastrados pelo usuario
+def listar_dados_cadastrados(usuarios, conteudos, eventos, dados_poluicao, recursos_marinhos, doacoes):
     print("\nDados Cadastrados:")
     print("\nUsuários:")
     for usuario in usuarios:
@@ -110,6 +137,23 @@ def listar_dados_cadastrados(usuarios, conteudos, eventos, dados_poluicao):
         print("Localização:", dado['localizacao'])
         print("Quantidade de Lixo (kg):", dado['quantidade_lixo'])
         print("Data da Coleta:", dado['data_coleta'].strftime("%d/%m/%Y"))
+        print("---------------------------")
+
+    print("\nRecursos Marinhos:")
+    for recurso in recursos_marinhos:
+        print("ID do Recurso:", recurso['recurso_id'])
+        print("Nome:", recurso['nome'])
+        print("Tipo:", recurso['tipo'])
+        print("Descrição:", recurso['descricao'])
+        print("---------------------------")
+
+    print("\nDoações:")
+    for doacao in doacoes:
+        print("ID da Doação:", doacao['doacao_id'])
+        print("ID do Usuário:", doacao['usuario_id'])
+        print("Valor:", doacao['valor'])
+        print("Data da Doação:", doacao['data_doacao'].strftime("%d/%m/%Y"))
+        print("Forma de Pagamento:", doacao['forma_pagamento'])
         print("---------------------------")
 
 # Função para o submenu de opções de conteúdo
@@ -177,6 +221,8 @@ def main():
     conteudos = []
     eventos = []
     dados_poluicao = []
+    recursos_marinhos = []
+    doacoes = []
 
     while True:
         print("\nMenu Principal")
@@ -184,8 +230,10 @@ def main():
         print("2. Submenu de Conteúdo")
         print("3. Submenu de Evento de Limpeza")
         print("4. Adicionar Dados de Poluição")
-        print("5. Listar Dados Cadastrados")
-        print("6. Sair")
+        print("5. Adicionar Recurso Marinho")
+        print("6. Adicionar Doação")
+        print("7. Listar dados cadastrados")
+        print("8. Sair do sistema")
 
         escolha = validar_entrada("Escolha uma opção: ", 'int')
 
@@ -204,9 +252,15 @@ def main():
             print("Dados de Poluição adicionados com sucesso!")
 
         elif escolha == 5:
-            listar_dados_cadastrados(usuarios, conteudos, eventos, dados_poluicao)
+            adicionar_recurso_marinhos(recursos_marinhos)
 
         elif escolha == 6:
+            adicionar_doacao(doacoes)
+
+        elif escolha == 7:
+            listar_dados_cadastrados(usuarios, conteudos, eventos, dados_poluicao)
+
+        elif escolha == 8:
             print("Saindo do sistema. Até logo!")
             break
 
